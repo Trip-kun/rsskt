@@ -35,6 +35,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: staging/${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.event.release.tag_name }}
+          tags: |
+            ghcr.io/${{ github.repository }}:staging-${{ github.sha }}
+            ghcr.io/${{ github.repository }}:staging-latest
+          platforms: linux/amd64,linux/arm64
           cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/rsskt:staging-buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/rsskt:staging-buildcache,mode=max
