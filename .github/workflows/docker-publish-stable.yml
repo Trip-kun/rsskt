@@ -35,3 +35,5 @@ jobs:
           context: .
           push: true
           tags: user/app-stable:stable
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/rsskt:staging-buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/rsskt:staging-buildcache,mode=max
