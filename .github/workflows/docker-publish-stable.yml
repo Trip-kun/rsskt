@@ -34,6 +34,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: user/app-stable:stable
+          tags: latest/${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.event.release.tag_name }}
           cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/rsskt:staging-buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/rsskt:staging-buildcache,mode=max
