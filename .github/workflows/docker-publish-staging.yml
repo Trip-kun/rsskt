@@ -29,15 +29,19 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ghrc.io/${{ github.repository }}
       -
         name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: |
-            ghcr.io/${{ github.repository }}:staging-${{ github.event.release.tag_name }}
-            ghcr.io/${{ github.repository }}:staging-latest
+          tags: steps.meta.outputs.tags
+          labels: steps.meta.outputs.labels
           platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ REPO }}:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ REPO }}:buildcache,mode=max
