@@ -39,9 +39,8 @@ fun startServer() {
                         }
                     )
                     println("Server started on port ${serverConfig.security.sslPort}")
-                } catch (e: Throwable) {
+                } catch (e: Exception) {
                     println("Error reading security keys: ${e.message}")
-                    println("Full error: ${e.printStackTrace()}")
                     throw e
                 }
                 connector { // Set up the non-ssl connector.
