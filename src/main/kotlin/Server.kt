@@ -18,8 +18,8 @@ fun startServer() {
     embeddedServer(Tomcat, configure = {
         configureTomcat = {
             if (serverConfig.security.useSSL) { // If we're using SSL, we need to set up the SSL connector.
-                println("Starting ssl server on port ${serverConfig.security.sslPort}")
-                println("Starting non-ssl server on port ${serverConfig.port}")
+                Logger.info("Starting ssl server on port ${serverConfig.security.sslPort}")
+                Logger.info("Starting non-ssl server on port ${serverConfig.port}")
                 this.setPort(serverConfig.port) // Set the non-ssl port
                 try { // Try to read the keystore file and set up the SSL connector.
                     val keyStorePath = Path.of(serverConfig.security.jksFile)
@@ -38,16 +38,15 @@ fun startServer() {
                             this.port = serverConfig.security.sslPort
                         }
                     )
-                    println("Server started on port ${serverConfig.security.sslPort}")
                 } catch (e: Exception) {
-                    println("Error reading security keys: ${e.message}")
+                    Logger.info("Error reading security keys: ${e.message}")
                     throw e
                 }
                 connector { // Set up the non-ssl connector.
                     this.port = serverConfig.port
                 }
             } else { // If we're not using SSL, we only need the non-ssl connector.
-                println("Starting non-ssl server on port ${serverConfig.port}")
+                Logger.info("Starting non-ssl server on port ${serverConfig.port}")
                 connector {
                     this.port = serverConfig.port
                 }

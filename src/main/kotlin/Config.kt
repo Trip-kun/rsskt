@@ -43,21 +43,21 @@ private lateinit var config: Config
 fun getConfig(): Config {
     if (!::config.isInitialized) {
         try { // First we see if the config exists and is valid JSON for the Config class.
-            println("Reading config.json")
+            Logger.info("Reading config.json")
             val file = File("config.json")
 
             config = json.decodeFromString(file.readText())
         } catch (e: SerializationException) { // If the file is invalid JSON, we print an error and throw an exception, noting possible solutions.
-            println("You may need to delete config.json and restart the server. This could be caused by a configuration update. If so, try renaming config.json to config.json.old, and restarting the server to create a new default config, then update the new config.json with your settings.")
+            Logger.info("You may need to delete config.json and restart the server. This could be caused by a configuration update. If so, try renaming config.json to config.json.old, and restarting the server to create a new default config, then update the new config.json with your settings.")
             throw e
         } catch (e: Exception) { // If the file doesn't exist, we write a default config.
             config = Config() // Default config
             val file = File("config.json")
             try {
-                println("Writing default config.json")
+                Logger.info("Writing default config.json")
                 file.writeText(json.encodeToString(config))
             } catch (e: Exception) { // If we can't write the default config, we print an error and throw an exception.
-                println("Error writing default config: ${e.message}")
+                Logger.info("Error writing default config: ${e.message}")
                 throw e
             }
         }

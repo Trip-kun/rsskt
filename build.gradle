@@ -15,12 +15,13 @@ repositories {
 
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    implementation 'ch.qos.logback:logback-classic:1.5.12'
+    implementation 'org.slf4j:slf4j-api:2.0.16'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json'
     implementation "io.ktor:ktor-server-core:3.0.1"
     implementation "io.ktor:ktor-server-tomcat-jakarta:3.0.1"
     implementation "io.ktor:ktor-server-content-negotiation:3.0.1"
     implementation "io.ktor:ktor-serialization-kotlinx-json:3.0.1"
-    implementation "ch.qos.logback:logback-classic:1.5.12"
     implementation "io.ktor:ktor-network-tls-certificates:3.0.1"
     implementation "io.ktor:ktor-server-http-redirect:3.0.1"
 }

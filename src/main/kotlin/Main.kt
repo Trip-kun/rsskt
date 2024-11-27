@@ -4,7 +4,7 @@ fun main() {
     try {
         startServer()
     } catch (e: Throwable) {
-        println("Error starting server: ${e.message}")
-        println(e.stackTrace.toString())
+        Logger.error("Error starting server: ${e.message}")
+        Logger.error("Stack trace: ${e.stackTraceToString()}")
     }
 }
