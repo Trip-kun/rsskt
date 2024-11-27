@@ -9,14 +9,11 @@ import io.ktor.server.routing.*
 import io.ktor.server.tomcat.jakarta.*
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.io.IOException
 import java.nio.file.Files
-import java.nio.file.InvalidPathException
 import java.nio.file.Path
 import java.security.KeyStore
-import java.security.KeyStoreException
 
-val serverConfig = getConfig()
+private val serverConfig = getConfig()
 fun startServer() {
     embeddedServer(Tomcat, configure = {
         configureTomcat = {
@@ -42,18 +39,10 @@ fun startServer() {
                         }
                     )
                     println("Server started on port ${serverConfig.security.sslPort}")
-                } catch (e: InvalidPathException) {
+                } catch (e: Throwable) {
                     println("Error reading security keys: ${e.message}")
                     println("Full error: ${e.printStackTrace()}")
-                } catch (e: FileRWException) {
-                    println("Error reading security keys: ${e.message}")
-                    println("Full error: ${e.printStackTrace()}")
-                } catch (e: KeyStoreException) {
-                    println("Error reading security keys: ${e.message}")
-                    println("Full error: ${e.printStackTrace()}")
-                } catch (e: IOException) {
-                    println("Error reading security keys: ${e.message}")
-                    println("Full error: ${e.printStackTrace()}")
+                    throw e
                 }
                 connector { // Set up the non-ssl connector.
                     this.port = serverConfig.port
@@ -71,6 +60,7 @@ fun startServer() {
                 sslPort = serverConfig.security.sslPort
                 permanentRedirect = false // We don't want to permanently redirect, as we may want to use the non-ssl port for testing. It's just really annoying to get rid of a permanent redirect.
             }
+
         }
         install(ContentNegotiation) { // Set up JSON serialization for the server.
             val json = Json {
